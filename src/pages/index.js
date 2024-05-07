@@ -2,10 +2,26 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Roboto_Flex } from 'next/font/google'
 import styles from '@/styles/Home.module.scss'
+import React, { useState, useEffect, useRef } from 'react';
+import {gsap} from 'gsap';
+import ScrollTrigger from "gsap/dist/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
 
 const robo = Roboto_Flex({ subsets: ['latin'] })
 
 export default function Home() {
+  const NavRef = useRef(null);
+  console.log("Home render");
+
+  useEffect(()=>{
+    if(NavRef.current){
+      console.log('call animateNav',NavRef.current);
+      const tl = animateNav();
+      console.log(tl);
+    }
+  },[])
+  //console.log("tl",tl);
+  //animateBox(1);
   return (
     <>
       <Head>
@@ -15,26 +31,752 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={`${styles.main} ${robo.className}`}>
-          <h1>Hi, I am Baily</h1>
-          <nav>
-            <a href="#about">
-              <h2>About</h2>
-              <p>Learn about me and the hats I wear</p>
-            </a>
-            <a href="#portfolio">
-              <h2>Portfolio</h2>
-              <p>Take a look at the things I've done</p>
-            </a>
-            <a href="#printing">
-              <h2>3D Printing</h2>
-              <p>Model design and plastic extruding</p>
-            </a>
-            <a href="#connect">
-              <h2>Connect</h2>
-              <p>Let's chat</p>
-            </a>
+          <div className={`${styles.intro}`}>
+            <h1>Hi, I am Baily</h1>
+            <h2>Welcome to my website</h2>
+          </div>
+          <nav ref={NavRef}>
+            <NavItem
+              number={1}
+              styles={styles}
+              anchor="#about"
+              title="About"
+              excerpt="Learn about me and the hats I wear"
+              grid_area="1 / 1 / 2 / 2"
+            />
+            <NavItem 
+              number={2}
+              styles={styles}
+              anchor="#portfolio"
+              title="Portfolio"
+              excerpt="Take a look at the things I've done"
+              grid_area="1 / 2 / 2 / 3"
+            />
+            <NavItem 
+              number={3}
+              styles={styles}
+              anchor="printing"
+              title="3D Printing"
+              excerpt="Model design and plastic extruding"
+              grid_area="2 / 1 / 3 / 2"
+            />
+            <NavItem 
+              number={4}
+              styles={styles}
+              anchor="connect"
+              title="Connect"
+              excerpt="Let's chat"
+              grid_area="2 / 2 / 3 / 3"
+            />
+
           </nav>
       </main>
     </>
   )
+}
+const NavItem = (props) => {
+  const BoxTop = useRef(null);
+  const BoxRight = useRef(null);
+  const BoxBottom = useRef(null);
+  const BoxLeft = useRef(null);
+
+  console.log(props);
+  useEffect(() => {
+    console.log("Mount render",props.number);
+    const viewport = {
+      'width' : window.innerWidth,
+      'height' : window.innerHeight
+    }
+    const boxport = {
+      'width' : document.querySelector('nav > a').clientWidth,
+      'height' : document.querySelector('nav > a').clientHeight,
+    }
+    // switch (props.number){
+    //   case 1:
+    //     if(!BoxTop.current.classList.contains('animated')){
+    //       BoxTop.current.classList.add('animated');
+    //       BoxTop.current.style.placeSelf = 'start end';
+    //    )[0];
+    //       console.log('offsets', box_offset);
+    //       props.tl.add(gsap.fromTo(BoxTop.current, 
+    //         { 
+    //           width:`0%`,
+    //           //translate:`-${box_offset.left}px -${box_offset.top}px`,
+    //         },
+    //         { 
+    //           width: `100%`, 
+    //           //translate:`0px 0px`,
+    //           ease:'none',
+    //         }
+    //       ), 'first'
+    //       );
+    //     }
+    //     if(!BoxLeft.current.classList.contains('animated')){
+    //       BoxLeft.current.classList.add('animated');
+    //       BoxLeft.current.style.placeSelf = 'start start';
+    //    ()[0];
+    //       console.log('offsets', box_offset);
+    //       console.log('debug', `${viewport.width/2}px`);
+    //       props.tl.add(gsap.fromTo(BoxLeft.current, 
+    //         { 
+    //           height:`0%`,
+    //           //translate:`${0}px -${box_offset.top}px`,
+    //         },
+    //         { 
+    //           height: `100%`,
+    //           //translate:`0px 0px`,
+    //           ease:'none',
+    //         }
+    //       ), 'second'
+    //       );
+    //     }
+    //     if(!BoxRight.current.classList.contains('animated')){
+    //       BoxRight.current.classList.add('animated');
+    //       BoxRight.current.style.placeSelf = 'start end';
+    //    s()[0];
+    //       console.log('offsets', box_offset);
+    //       console.log('debug', `${viewport.width/2}px`);
+    //       props.tl.add(gsap.fromTo(BoxRight.current, 
+    //         { 
+    //           height:`0%`,
+    //           //translate:`${0}px -${box_offset.top}px`,
+    //         },
+    //         { 
+    //           height: `100%`,
+    //           //translate:`0px 0px`,
+    //           ease:'none',
+    //         }
+    //       ), 'fifth'
+    //       );
+    //     }
+    //     if(!BoxBottom.current.classList.contains('animated')){
+    //       BoxBottom.current.classList.add('animated');
+    //       BoxBottom.current.style.placeSelf = 'end start';
+    //    ts()[0];
+    //       console.log('offsets', box_offset);
+    //       console.log('debug', `${viewport.width/2}px`);
+    //       props.tl.add(gsap.fromTo(BoxBottom.current, 
+    //         { 
+    //           height:`0%`,
+    //           //translate:`${0}px -${box_offset.top}px`,
+    //         },
+    //         { 
+    //           height: `100%`,
+    //           //translate:`0px 0px`,
+    //           ease:'none',
+    //         }
+    //       ), 'fifth'
+    //       );
+    //     }
+    //     break;
+    //   case 2:
+    //     if(!BoxTop.current.classList.contains('animated')){
+    //       BoxTop.current.classList.add('animated');
+    //       BoxTop.current.style.placeSelf = 'start start';
+    //    )[0];
+    //       console.log('offsets', box_offset);
+    //       console.log('debug', `${viewport.width/2}px`);
+    //       props.tl.add(gsap.fromTo(BoxTop.current, 
+    //         { 
+    //           width:`0%`,
+    //           //translate:`${0}px -${box_offset.top}px`,
+    //         },
+    //         { 
+    //           width: `100%`,
+    //           //translate:`0px 0px`,
+    //           ease:'none',
+    //         }
+    //       ), 'first'
+    //       );
+    //     }
+    //     if(!BoxRight.current.classList.contains('animated')){
+    //       BoxRight.current.classList.add('animated');
+    //       BoxRight.current.style.placeSelf = 'start end';
+    //    s()[0];
+    //       console.log('offsets', box_offset);
+    //       console.log('debug', `${viewport.width/2}px`);
+    //       props.tl.add(gsap.fromTo(BoxRight.current, 
+    //         { 
+    //           height:`0%`,
+    //           //translate:`${0}px -${box_offset.top}px`,
+    //         },
+    //         { 
+    //           height: `100%`,
+    //           //translate:`0px 0px`,
+    //           ease:'none',
+    //         }
+    //       ), 'second'
+    //       );
+    //     }
+    //     if(!BoxLeft.current.classList.contains('animated')){
+    //       BoxLeft.current.classList.add('animated');
+    //       BoxLeft.current.style.placeSelf = 'start start';
+    //    ()[0];
+    //       console.log('offsets', box_offset);
+    //       console.log('debug', `${viewport.width/2}px`);
+    //       props.tl.add(gsap.fromTo(BoxLeft.current, 
+    //         { 
+    //           height:`0%`,
+    //           //translate:`${0}px -${box_offset.top}px`,
+    //         },
+    //         { 
+    //           height: `100%`,
+    //           //translate:`0px 0px`,
+    //           ease:'none',
+    //         }
+    //       ), 'fifth'
+    //       );
+    //     }
+    //     if(!BoxBottom.current.classList.contains('animated')){
+    //       BoxBottom.current.classList.add('animated');
+    //       BoxBottom.current.style.placeSelf = 'start end';
+    //    ts()[0];
+    //       console.log('offsets', box_offset);
+    //       console.log('debug', `${viewport.width/2}px`);
+    //       props.tl.add(gsap.fromTo(BoxBottom.current, 
+    //         { 
+    //           width:`0%`,
+    //           //translate:`${0}px -${box_offset.top}px`,
+    //         },
+    //         { 
+    //           width: `100%`,
+    //           //translate:`0px 0px`,
+    //           ease:'none',
+    //         }
+    //       ), 'fifth'
+    //       );
+    //     }
+    //     break;
+    //   case 3:
+    //     if(!BoxLeft.current.classList.contains('animated')){
+    //       BoxLeft.current.classList.add('animated');
+    //       BoxLeft.current.style.placeSelf = 'start start';
+    //       Box
+    //    ()[0];
+    //       console.log('offsets', box_offset);
+    //       console.log('debug', `${viewport.width/2}px`);
+    //       props.tl.add(gsap.fromTo(BoxLeft.current, 
+    //         { 
+    //           height:`0%`,
+    //           //translate:`${0}px -${box_offset.top}px`,
+    //         },
+    //         { 
+    //           height: `100%`,
+    //           //translate:`0px 0px`,
+    //           ease:'none',
+    //         }
+    //       ), 'third'
+    //       );
+    //     }
+    //     if(!BoxBottom.current.classList.contains('animated')){
+    //       BoxBottom.current.classList.add('animated');
+    //       BoxBottom.current.style.placeSelf = 'end start';
+    //       BoxBo
+    //    ts()[0];
+    //       console.log('offsets', box_offset);
+    //       console.log('debug', `${viewport.width/2}px`);
+    //       props.tl.add(gsap.fromTo(BoxBottom.current, 
+    //         { 
+    //           width:`0%`,
+    //           //translate:`${0}px -${box_offset.top}px`,
+    //         },
+    //         { 
+    //           width: `100%`,
+    //           //translate:`0px 0px`,
+    //           ease:'none',
+    //         }
+    //       ), 'fourth'
+    //       );
+    //     }
+    //     break;
+    //   case 4:
+    //     if(!BoxRight.current.classList.contains('animated')){
+    //       BoxRight.current.classList.add('animated');
+    //       BoxRight.current.style.placeSelf = 'start end';
+    //       BoxR
+    //    s()[0];
+    //       console.log('offsets', box_offset);
+    //       console.log('debug', `${viewport.width/2}px`);
+    //       props.tl.add(gsap.fromTo(BoxRight.current, 
+    //         { 
+    //           height:`0%`,
+    //           //translate:`${0}px -${box_offset.top}px`,
+    //         },
+    //         { 
+    //           height: `100%`,
+    //           //translate:`0px 0px`,
+    //           ease:'none',
+    //         }
+    //       ), 'third'
+    //       );
+    //     }
+    //     if(!BoxBottom.current.classList.contains('animated')){
+    //       BoxBottom.current.classList.add('animated');
+    //       BoxBottom.current.style.placeSelf = 'end end';
+    //       BoxBo
+    //    ts()[0];
+    //       console.log('offsets', box_offset);
+    //       console.log('debug', `${viewport.width/2}px`);
+    //       props.tl.add(gsap.fromTo(BoxBottom.current, 
+    //         { 
+    //           width:`0%`,
+    //           //translate:`${0}px -${box_offset.top}px`,
+    //         },
+    //         { 
+    //           width: `100%`,
+    //           //translate:`0px 0px`,
+    //           ease:'none',
+    //         }
+    //       ), 'fourth'
+    //       );
+    //     }
+    //     break;
+    //   default:
+    //     break;
+    // }
+    return () => {
+      console.log("unmount");
+      //tl.destroy();
+    }
+  },[]);
+
+  return (
+    <>
+      <a href={props.anchor} data-num={props.number} style={{gridArea:props.grid_area}}>
+        <h2>{props.title}</h2>
+        <p>{props.excerpt}</p>
+      </a>
+      <div ref={BoxTop} data-num={props.number} className={`${props.styles["shadowBox"]} ${props.styles["shadowBox-top"]}`} style={{ gridArea: props.grid_area }}></div>
+      <div ref={BoxRight} data-num={props.number} className={`${props.styles["shadowBox"]} ${props.styles["shadowBox-right"]}`} style={{ gridArea: props.grid_area }}></div>
+      <div ref={BoxBottom} data-num={props.number} className={`${props.styles["shadowBox"]} ${props.styles["shadowBox-bottom"]}`} style={{ gridArea: props.grid_area }}></div>
+      <div ref={BoxLeft} data-num={props.number} className={`${props.styles["shadowBox"]} ${props.styles["shadowBox-left"]}`} style={{ gridArea: props.grid_area }}></div>
+    </>
+  )
+}
+
+// const animateBox = (meep) => {
+//   const boxes = document.querySelectorAll('div[data-num="1"]');
+//   switch (meep){
+//     case 1: 
+//       //Top Box
+//    //       console.log('offsets', box_offset);
+//       let tl = gsap.timeline();
+//       tl.add(gsap.fromTo(boxes[0], 
+//         { 
+//           width:'50vw',
+//           translate:`-${box_offset.left}px -${box_offset.top}px`,
+//         },
+//         { 
+//           width: '100%', 
+//           translate:`0px 0px`,
+//           ease:'none',
+//         }
+//       ));
+//       break;
+//     default:
+//       console.log("default");
+//       break;
+//     }
+// }
+
+const animateNav = () =>{
+  const dur = 0.25;
+  let tl = gsap.timeline({
+    paused:true,
+    scrollTrigger: {
+      markers:true,
+      trigger: "nav",
+      pin: false, // pin the trigger element while active
+      start: "top 25%", // when the top of the trigger hits the top of the viewport
+      end: "bottom 10%", // end after scrolling 500px beyond the start
+      scrub: 1, // smooth scrubbing, takes 1 second to "catch up" to the scrollbarx
+    },
+  });
+  // const viewport = {
+  //   'width' : window.innerWidth,
+  //   'height' : window.innerHeight
+  // }
+  // const boxport = {
+  //   'width' : document.querySelector('nav > a').clientWidth,
+  //   'height' : document.querySelector('nav > a').clientHeight,
+  // }
+  const Boxes1 = document.querySelectorAll('nav > div[data-num="1"]');
+  const Boxes2 = document.querySelectorAll('nav > div[data-num="2"]');
+  const Boxes3 = document.querySelectorAll('nav > div[data-num="3"]');
+  const Boxes4 = document.querySelectorAll('nav > div[data-num="4"]');
+  ///Top
+  if(!Boxes1[0].classList.contains('animated')){
+    Boxes1[0].classList.add('animated');
+    Boxes1[0].style.placeSelf = 'start end';
+    tl.add(gsap.fromTo(Boxes1[0], 
+      { 
+        width:`0%`,
+        //translate:`-${box_offset.left}px -${box_offset.top}px`,
+      },
+      { 
+        width: `100%`, 
+        //translate:`0px 0px`,
+        ease:'none',
+      }
+    ), 'top',
+    );
+  }
+  if(!Boxes2[0].classList.contains('animated')){
+    Boxes2[0].classList.add('animated');
+    Boxes2[0].style.placeSelf = 'start start';
+    tl.add(gsap.fromTo(Boxes2[0], 
+      { 
+        width:`0%`,
+        //translate:`${0}px -${box_offset.top}px`,
+      },
+      { 
+        width: `100%`,
+        //translate:`0px 0px`,
+        ease:'none',
+      }
+    ), 'top'
+    );
+  }
+  //Top Sides
+  if(!Boxes1[3].classList.contains('animated')){
+    Boxes1[3].classList.add('animated');
+    Boxes1[3].style.placeSelf = 'start start';
+    tl.add(gsap.fromTo(Boxes1[3], 
+      { 
+        height:`0%`,
+        //translate:`${0}px -${box_offset.top}px`,
+      },
+      { 
+        height: `100%`,
+        //translate:`0px 0px`,
+        ease:'none',
+      }
+    ), 'top-side'
+    );
+  }
+  if(!Boxes2[1].classList.contains('animated')){
+    Boxes2[1].classList.add('animated');
+    Boxes2[1].style.placeSelf = 'start end';
+    tl.add(gsap.fromTo(Boxes2[1], 
+      { 
+        height:`0%`,
+        //translate:`${0}px -${box_offset.top}px`,
+      },
+      { 
+        height: `100%`,
+        //translate:`0px 0px`,
+        ease:'none',
+      }
+    ), 'top-side'
+    );
+  }
+  //Bottom-side
+  if(!Boxes3[3].classList.contains('animated')){
+    Boxes3[3].classList.add('animated');
+    Boxes3[3].style.placeSelf = 'start start';
+    tl.add(gsap.fromTo(Boxes3[3], 
+      { 
+        height:`0%`,
+        //translate:`${0}px -${box_offset.top}px`,
+      },
+      { 
+        height: `100%`,
+        //translate:`0px 0px`,
+        ease:'none',
+      }
+    ), 'bottom-side'
+    );
+  }
+  if(!Boxes4[1].classList.contains('animated')){
+    Boxes4[1].classList.add('animated');
+    Boxes4[1].style.placeSelf = 'start end';
+    tl.add(gsap.fromTo(Boxes4[1], 
+      { 
+        height:`0%`,
+        //translate:`${0}px -${box_offset.top}px`,
+      },
+      { 
+        height: `100%`,
+        //translate:`0px 0px`,
+        ease:'none',
+      }
+    ), 'bottom-side'
+    );
+  }
+  //Bottom
+  if(!Boxes3[2].classList.contains('animated')){
+    Boxes3[2].classList.add('animated');
+    Boxes3[2].style.placeSelf = 'end start';
+    tl.add(gsap.fromTo(Boxes3[2], 
+      { 
+        width:`0%`,
+        //translate:`${0}px -${box_offset.top}px`,
+      },
+      { 
+        width: `100%`,
+        //translate:`0px 0px`,
+        ease:'none',
+      }
+    ), 'bottom'
+    );
+  }
+  if(!Boxes4[2].classList.contains('animated')){
+    Boxes4[2].classList.add('animated');
+    Boxes4[2].style.placeSelf = 'end end';
+    tl.add(gsap.fromTo(Boxes4[2], 
+      { 
+        width:`0%`,
+        //translate:`${0}px -${box_offset.top}px`,
+      },
+      { 
+        width: `100%`,
+        //translate:`0px 0px`,
+        ease:'none',
+      }
+    ), 'bottom'
+    );
+  }
+  //inner
+  if(!Boxes1[1].classList.contains('animated')){
+    Boxes1[1].classList.add('animated');
+    Boxes1[1].style.width ='5px';
+    Boxes1[1].style.placeSelf = 'start end';    tl.add(gsap.fromTo(Boxes1[1], 
+      { 
+        height:`0%`,
+        //translate:`${0}px -${box_offset.top}px`,
+      },
+      { 
+        height: `100%`,
+        //translate:`0px 0px`,
+        ease:'none',
+      }
+    ), 'inner'
+    );
+    tl.add(gsap.fromTo(Boxes1[1], 
+      { 
+        width:'5px'
+        //translate:`${0}px -${box_offset.top}px`,
+      },
+      { 
+        width:'10px',
+        //translate:`0px 0px`,
+        ease:'none',
+      }
+    ), 'gap'
+    );
+  }
+  if(!Boxes1[2].classList.contains('animated')){
+    Boxes1[2].classList.add('animated');
+    Boxes1[2].style.placeSelf = 'end start';
+    Boxes1[2].style.height = '5px';
+    tl.add(gsap.fromTo(Boxes1[2], 
+      { 
+        width:`0%`,
+        //translate:`${0}px -${box_offset.top}px`,
+      },
+      { 
+        width: `100%`,
+        //translate:`0px 0px`,
+        ease:'none',
+      }
+    ), 'inner'
+    );
+    tl.add(gsap.fromTo(Boxes1[2], 
+      { 
+        height:'5px'
+        //translate:`${0}px -${box_offset.top}px`,
+      },
+      { 
+        height:'10px',
+        //translate:`0px 0px`,
+        ease:'none',
+      }
+    ), 'gap'
+    );
+  }
+  if(!Boxes2[3].classList.contains('animated')){
+    Boxes2[3].classList.add('animated');
+    Boxes2[3].style.placeSelf = 'start start';
+    Boxes2[3].style.width ='5px';
+    tl.add(gsap.fromTo(Boxes2[3], 
+      { 
+        height:`0%`,
+        //translate:`${0}px -${box_offset.top}px`,
+      },
+      { 
+        height: `100%`,
+        //translate:`0px 0px`,
+        ease:'none',
+      }
+    ), 'inner'
+    );
+    tl.add(gsap.fromTo(Boxes2[3], 
+      { 
+        width:'5px'
+        //translate:`${0}px -${box_offset.top}px`,
+      },
+      { 
+        width:'10px',
+        //translate:`0px 0px`,
+        ease:'none',
+      }
+    ), 'gap'
+    );
+  }
+  if(!Boxes2[2].classList.contains('animated')){
+    Boxes2[2].classList.add('animated');
+    Boxes2[2].style.placeSelf = 'end end';
+    Boxes2[2].style.height = '5px';
+    tl.add(gsap.fromTo(Boxes2[2], 
+      { 
+        width:`0%`,
+        //translate:`${0}px -${box_offset.top}px`,
+      },
+      { 
+        width: `100%`,
+        //translate:`0px 0px`,
+        ease:'none',
+      }
+    ), 'inner'
+    );
+    tl.add(gsap.fromTo(Boxes2[2], 
+      { 
+        height:'5px'
+        //translate:`${0}px -${box_offset.top}px`,
+      },
+      { 
+        height:'10px',
+        //translate:`0px 0px`,
+        ease:'none',
+      }
+    ), 'gap'
+    );
+  }
+  if(!Boxes3[0].classList.contains('animated')){
+    Boxes3[0].classList.add('animated');
+    Boxes3[0].style.placeSelf = 'start start';
+    Boxes3[0].style.height = '5px';
+    tl.add(gsap.fromTo(Boxes3[0], 
+      { 
+        width:`0%`,
+        //translate:`${0}px -${box_offset.top}px`,
+      },
+      { 
+        width: `100%`,
+        //translate:`0px 0px`,
+        ease:'none',
+      }
+    ), 'inner'
+    );
+    tl.add(gsap.fromTo(Boxes3[0], 
+      { 
+        height:'5px'
+        //translate:`${0}px -${box_offset.top}px`,
+      },
+      { 
+        height:'10px',
+        //translate:`0px 0px`,
+        ease:'none',
+      }
+    ), 'gap'
+    );
+  }
+  if(!Boxes3[1].classList.contains('animated')){
+    Boxes3[1].classList.add('animated');
+    Boxes3[1].style.placeSelf = 'end end';
+    Boxes3[1].style.width ='5px';
+    tl.add(gsap.fromTo(Boxes3[1], 
+      { 
+        height:`0%`,
+        //translate:`${0}px -${box_offset.top}px`,
+      },
+      { 
+        height: `100%`,
+        //translate:`0px 0px`,
+        ease:'none',
+      }
+    ), 'inner'
+    );
+    tl.add(gsap.fromTo(Boxes3[1], 
+      { 
+        width:'5px'
+        //translate:`${0}px -${box_offset.top}px`,
+      },
+      { 
+        width:'10px',
+        //translate:`0px 0px`,
+        ease:'none',
+      }
+    ), 'gap'
+    );
+  }
+  if(!Boxes4[0].classList.contains('animated')){
+    Boxes4[0].classList.add('animated');
+    Boxes4[0].style.placeSelf = 'start end';
+    Boxes4[0].style.height = '5px';
+    tl.add(gsap.fromTo(Boxes4[0], 
+      { 
+        width:`0%`,
+        //translate:`${0}px -${box_offset.top}px`,
+      },
+      { 
+        width: `100%`,
+        //translate:`0px 0px`,
+        ease:'none',
+      }
+    ), 'inner'
+    );
+    tl.add(gsap.fromTo(Boxes4[0], 
+      { 
+        height:'5px'
+        //translate:`${0}px -${box_offset.top}px`,
+      },
+      { 
+        height:'10px',
+        //translate:`0px 0px`,
+        ease:'none',
+      }
+    ), 'gap'
+    );
+  }
+  if(!Boxes4[3].classList.contains('animated')){
+    Boxes4[3].classList.add('animated');
+    Boxes4[3].style.placeSelf = 'end start';
+    Boxes4[3].style.width ='5px';
+    tl.add(gsap.fromTo(Boxes4[3], 
+      { 
+        height:`0%`,
+        //translate:`${0}px -${box_offset.top}px`,
+      },
+      { 
+        height: `100%`,
+        //translate:`0px 0px`,
+        ease:'none',
+      }
+    ), 'inner'
+    );
+    tl.add(gsap.fromTo(Boxes4[3], 
+      { 
+        width:'5px'
+        //translate:`${0}px -${box_offset.top}px`,
+      },
+      { 
+        width:'10px',
+        //translate:`0px 0px`,
+        ease:'none',
+      }
+    ), 'gap'
+    );
+    tl.add(gsap.to('nav', {gap:'1em'}),'gap');
+    tl.add(gsap.to('nav a', {opacity:'1'}),'gap');
+  }
+
+  //Gap
+  if(tl.labels == {}){
+    tl.destroy();
+  } else {
+    //tl.duration(2);
+    //tl.play();
+  }
+  return tl;
 }
