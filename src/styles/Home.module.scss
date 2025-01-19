@@ -26,6 +26,8 @@
 
   }
   nav{
+    --padding: 10px;
+    --border-color: teal;
     //max-width:100%;
     margin:auto clamp(1em,10vw,5em);
     height:max-content;
@@ -39,8 +41,10 @@
     place-items: center;
     a{
       //grid-area: span 2 / span 2;
+      border-color:red;
+      border-style:solid;
       overflow: hidden;
-      padding:1em;
+      padding:calc(var(--padding) * 2);
       display: block;
       height: 100%;
       width: 100%;
@@ -67,9 +71,9 @@
 
 .shadowBox {
   display:block;
-  width:10px;
-  height:10px;
-  background:teal;
+  width:var(--padding);
+  height:var(--padding);
+  background:var(--border-color);
   // &-top{
   //   background:teal;
   // }
