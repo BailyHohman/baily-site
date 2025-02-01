@@ -1,6 +1,8 @@
 .main{
-  min-height:200vh;
+  // min-height:1000vh;
   .intro{
+    height:100vh;
+
     font-size:3rem;
     padding:1em;
     margin:auto;
@@ -29,12 +31,13 @@
     --padding: 10px;
     --border-color: teal;
     //max-width:100%;
-    margin:auto clamp(1em,10vw,5em);
+    width:100%;
+    // margin:auto clamp(1em,10vw,5em);
     height:max-content;
     //margin:2em;
     display:grid;
-    position:fixed;
-    inset:0 0 0 0;
+    // position:fixed;
+    // inset:0 0 0 0;
     //gap:2em;
     grid-template-rows: repeat(2, auto);
     grid-template-columns: repeat(2, 1fr);
