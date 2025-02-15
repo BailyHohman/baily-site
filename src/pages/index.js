@@ -97,10 +97,10 @@ const NavItem = (props) => {
   const handleClick = (event, props) => {
     console.log("handleClick",event,props);
     event.preventDefault();
-    navItemToPageAnimation(props.number);
+    navItemToPageAnimation(props.number, props.url);
   }
 
-  function navItemToPageAnimation(number){
+  function navItemToPageAnimation(number, url){
     [BoxTop.current, BoxRight.current, BoxLeft.current, BoxBottom.current].forEach((box) => {
       if (box) {
         box.style.opacity = '0'; // Set final opacity
@@ -122,9 +122,16 @@ const NavItem = (props) => {
 
       const targetX = (viewportWidth - elementWidth) / 2 - rect.left;
       const targetY = (viewportHeight - elementHeight) / 2 - rect.top;
+
+      //Freeze scroll
+      document.body.style.overflow = 'hidden';
   
       const tl = gsap.timeline({
-        duration:0.25
+        duration:0.25,
+        onComplete: (e) => {
+          console.log('onComplete',e, router, url);
+          router.push(url);
+        }
       });
       tl.to(linkRef.current,{
         x:targetX,
@@ -140,7 +147,7 @@ const NavItem = (props) => {
       tl.to(linkRef.current, {
         width:`calc(200% + 1em)`,
         x:targetX - magicNum,
-      }, '<')
+      }, '<');
     }
     
   }
