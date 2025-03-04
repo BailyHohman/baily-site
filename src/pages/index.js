@@ -5,6 +5,7 @@ import styles from '@/styles/Home.module.scss'
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import {gsap} from 'gsap';
+import HeroText from '../../components/HeroText';
 import ScrollTrigger from "gsap/dist/ScrollTrigger";
 import { useRouter } from 'next/router';
 gsap.registerPlugin(ScrollTrigger);
@@ -26,10 +27,7 @@ export default function Home() {
   return (
     <>
       <main className={`${styles.main} ${rose.className}`}>
-          <div className={`${styles.intro}`}>
-            <h1>Hi, I am Baily</h1>
-            <h2>Welcome to my website</h2>
-          </div>
+          <HeroText text={'Example'}/>
           <nav ref={navRef}>
             <NavItem
               number={1}
